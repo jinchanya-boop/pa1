@@ -1,0 +1,2832 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบส่ง PA1 ออนไลน์ – โรงเรียนสา</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #515ada;
+            --secondary-color: #efd5ff;
+            --accent-color: #7c3aed;
+            --bg-light: #f8f9fa;
+            --bg-white: #ffffff;
+            --text-color: #333;
+            --border-radius: 15px;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Prompt', sans-serif;
+            margin: 0;
+            background-color: var(--bg-light);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            width: 100%;
+            flex: 1;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+        }
+
+        .main-header {
+            background: linear-gradient(90deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .main-header img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 10px;
+            background: white;
+            padding: 8px;
+            border-radius: 10px;
+            object-fit: contain;
+        }
+
+        @media (max-width: 768px) {
+            .main-header img {
+                width: 60px;
+                height: 60px;
+            }
+            .main-header {
+                padding: 15px 10px;
+            }
+        }
+
+        .main-header h1 {
+            margin: 0;
+            font-size: clamp(1.1rem, 3.5vw, 1.8rem);
+            font-weight: 600;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .main-nav {
+            background-color: var(--bg-white);
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: center;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .main-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .main-nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 12px 20px;
+            font-weight: 500;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+            background: white;
+            cursor: pointer;
+            min-width: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            user-select: none;
+            white-space: nowrap;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .main-nav {
+                justify-content: flex-start;
+            }
+            .main-nav a {
+                padding: 10px 12px;
+                font-size: 0.8rem;
+                flex-direction: column;
+                gap: 2px;
+                min-width: 80px;
+            }
+            .main-nav a i {
+                font-size: 1.1rem;
+            }
+            .main-nav a span {
+                font-size: 0.7rem;
+            }
+        }
+
+        .main-nav a:hover {
+            background-color: #f8f9fa;
+        }
+
+        .main-nav a.active {
+            background: linear-gradient(to bottom, #ffffff, #f5f3ff);
+            border-bottom-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .page-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .page-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        section {
+            padding: 30px 20px;
+            margin-top: 20px;
+            background-color: var(--bg-white);
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        @media (max-width: 768px) {
+            section {
+                padding: 20px 15px;
+                margin-top: 15px;
+            }
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            font-size: clamp(1.2rem, 3vw, 1.6rem);
+            font-weight: 600;
+        }
+        
+        h2 i {
+            margin-right: 8px;
+            color: var(--accent-color);
+        }
+
+        h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            font-weight: 600;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .form-group.full-width {
+                grid-column: 1 / -1;
+            }
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #555;
+            font-size: 0.9rem;
+        }
+        
+        .form-group label i {
+            margin-right: 6px;
+            color: var(--accent-color);
+        }
+
+        .form-group input, 
+        .form-group select,
+        .form-group textarea {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.95rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            box-sizing: border-box;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-group input:focus, 
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 5px rgba(81, 90, 218, 0.3);
+        }
+        
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #fafafa;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .file-input-wrapper {
+                padding: 15px;
+                min-height: 100px;
+            }
+        }
+
+        .file-input-wrapper:hover { 
+            border-color: var(--primary-color);
+            background-color: #f5f3ff;
+        }
+
+        .file-input-wrapper.dragover {
+            border-color: var(--success-color);
+            background-color: #d4edda;
+        }
+
+        .file-input-wrapper input[type=file] {
+            position: absolute; 
+            left: 0; 
+            top: 0; 
+            opacity: 0;
+            cursor: pointer; 
+            width: 100%; 
+            height: 100%;
+        }
+
+        .file-input-label { 
+            color: #777;
+            font-size: 0.9rem;
+            pointer-events: none;
+        }
+
+        .file-input-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .file-input-icon {
+                font-size: 1.5rem;
+                margin-bottom: 5px;
+            }
+            .file-input-label {
+                font-size: 0.8rem;
+            }
+        }
+
+        #fileName { 
+            display: block;
+            margin-top: 10px;
+            font-weight: 500; 
+            color: var(--success-color); 
+            font-size: 0.9rem;
+        }
+
+        .file-progress {
+            width: 100%;
+            height: 4px;
+            background-color: #e9ecef;
+            border-radius: 2px;
+            margin-top: 10px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .file-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--success-color));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .submit-btn {
+            grid-column: 1 / -1; 
+            padding: 15px; 
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            font-size: 1rem;
+            font-weight: 600; 
+            font-family: 'Prompt', sans-serif; 
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(81, 90, 218, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn i { 
+            margin-right: 8px; 
+        }
+
+        .submit-btn:hover:not(:disabled) { 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(81, 90, 218, 0.4); 
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .submit-btn .loading-spinner {
+            display: none;
+            margin-right: 8px;
+        }
+
+        .submit-btn.loading .loading-spinner {
+            display: inline-block;
+        }
+
+        .submit-btn.loading i:not(.loading-spinner) {
+            display: none;
+        }
+
+        .admin-login { 
+            text-align: center; 
+            padding: 30px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e9d5ff 100%);
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+        }
+
+        .admin-btn {
+            padding: 12px 20px; 
+            background: var(--primary-color); 
+            color: white;
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer;
+            font-family: 'Prompt', sans-serif; 
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            margin: 5px;
+        }
+
+        .admin-btn:hover { 
+            opacity: 0.9; 
+            transform: scale(1.05);
+        }
+
+        .status-table-wrapper { 
+            overflow-x: auto; 
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        #statusTable, #publicSubmissionsTable { 
+            width: 100%; 
+            border-collapse: collapse; 
+            font-size: clamp(0.75rem, 1.5vw, 0.9rem);
+            background: white;
+            min-width: 1000px;
+        }
+
+        #statusTable th, #statusTable td,
+        #publicSubmissionsTable th, #publicSubmissionsTable td { 
+            padding: 12px 8px; 
+            text-align: left; 
+            border-bottom: 1px solid #eee; 
+            vertical-align: middle; 
+        }
+
+        @media (max-width: 768px) {
+            #statusTable th, #statusTable td,
+            #publicSubmissionsTable th, #publicSubmissionsTable td {
+                padding: 8px 5px;
+                font-size: 0.7rem;
+            }
+            
+            #statusTable, #publicSubmissionsTable {
+                min-width: 600px;
+            }
+        }
+
+        #statusTable th, #publicSubmissionsTable th { 
+            background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+            font-weight: 600;
+            color: var(--primary-color);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        #statusTable tbody tr:hover,
+        #publicSubmissionsTable tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        #statusTable td a, #publicSubmissionsTable td a { 
+            color: var(--primary-color); 
+            text-decoration: none; 
+        }
+
+        #statusTable td a:hover, #publicSubmissionsTable td a:hover { 
+            text-decoration: underline; 
+        }
+
+        .status-select {
+            padding: 6px 8px;
+            font-size: 0.8rem;
+            width: 100%;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-family: 'Prompt', sans-serif;
+            font-weight: 500;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .status-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(81, 90, 218, 0.1);
+        }
+
+        .status-select option {
+            padding: 5px;
+            font-weight: 500;
+        }
+
+        .status-select option[value*="⭐"] {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-select option[value*="✅"] {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-select option[value*="❗"] {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .comment-input {
+            padding: 6px 8px;
+            font-size: 0.8rem;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: 'Prompt', sans-serif;
+            min-width: 200px;
+        }
+
+        .comment-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(81, 90, 218, 0.1);
+        }
+
+        .dashboard-grid {
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px; 
+            margin-bottom: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 20px; 
+            border-radius: var(--border-radius);
+            text-align: center; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border-left: 5px solid var(--primary-color);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        @media (max-width: 768px) {
+            .stat-card {
+                padding: 15px;
+            }
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        }
+
+        .stat-card h3 { 
+            margin-top: 0; 
+            font-size: clamp(0.8rem, 2vw, 0.95rem); 
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .stat-number { 
+            font-size: clamp(2rem, 5vw, 2.5rem); 
+            font-weight: 700; 
+            color: var(--primary-color);
+            line-height: 1;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            white-space: nowrap;
+            text-align: center;
+            min-width: 80px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .status-badge.pending {
+            background: linear-gradient(135deg, #ffc107, #ffeb3b);
+            color: #995700;
+            border: 2px solid #ff8f00;
+            animation: pulse 2s infinite;
+        }
+
+        .status-badge.approved {
+            background: linear-gradient(135deg, #4caf50, #8bc34a);
+            color: white;
+            border: 2px solid #2e7d32;
+        }
+
+        .status-badge.revision {
+            background: linear-gradient(135deg, #f44336, #e57373);
+            color: white;
+            border: 2px solid #c62828;
+            animation: shake 0.5s ease-in-out infinite alternate;
+        }
+        .timeliness-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+    text-align: center;
+    min-width: 100px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.timeliness-badge.ontime {
+    background: linear-gradient(135deg, #4caf50, #8bc34a);
+    color: white;
+    border: 2px solid #2e7d32;
+}
+
+.timeliness-badge.late {
+    background: linear-gradient(135deg, #ff9800, #ffc107);
+    color: white;
+    border: 2px solid #e65100;
+}
+
+.timeliness-badge.unknown {
+    background: linear-gradient(135deg, #9e9e9e, #bdbdbd);
+    color: white;
+    border: 2px solid #616161;
+}
+
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 193, 7, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 193, 7, 0); }
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-2px); }
+        }
+
+        .main-footer {
+            text-align: center; 
+            padding: 20px; 
+            margin-top: auto;
+            font-size: 0.85rem; 
+            color: #777; 
+            background: linear-gradient(to top, #e9ecef, #f8f9fa);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 350px;
+            width: 100%;
+            background: white;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 280px;
+                padding: 10px;
+            }
+        }
+
+        .welcome-card {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            color: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 768px) {
+            .welcome-card {
+                padding: 20px;
+            }
+        }
+
+        .welcome-card h2 {
+            color: white;
+            margin-bottom: 12px;
+        }
+
+        .welcome-card p {
+            font-size: 1rem;
+            opacity: 0.95;
+        }
+
+        .quick-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .quick-stat {
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .quick-stat-number {
+            font-size: clamp(1.8rem, 4vw, 2.2rem);
+            font-weight: bold;
+            display: block;
+        }
+
+        .quick-stat-label {
+            font-size: clamp(0.75rem, 2vw, 0.85rem);
+            opacity: 0.9;
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, var(--success-color), #4caf50);
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-save:hover:not(:disabled) {
+            background: linear-gradient(135deg, #218838, #388e3c);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .btn-save:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-save i {
+            margin-right: 4px;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border: 1px solid #f5c6cb;
+        }
+
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border: 1px solid #c3e6cb;
+        }
+
+        /* Responsive table improvements */
+        @media (max-width: 480px) {
+            .status-table-wrapper {
+                font-size: 0.7rem;
+            }
+            
+            .status-select, .comment-input {
+                font-size: 0.7rem;
+                padding: 4px 6px;
+            }
+            
+            .btn-save {
+                padding: 4px 8px;
+                font-size: 0.7rem;
+            }
+        }
+
+        /* Touch-friendly improvements */
+        @media (hover: none) and (pointer: coarse) {
+            .submit-btn, .admin-btn, .btn-save {
+                min-height: 44px;
+            }
+            
+            .main-nav a {
+                min-height: 48px;
+            }
+            
+            .form-group input, .form-group select, .form-group textarea {
+                min-height: 44px;
+            }
+        }
+
+        /* Network status indicator */
+        .network-status {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            z-index: 1000;
+            display: none;
+        }
+
+        .network-status.online {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .network-status.offline {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        /* ✨ CSS สำหรับช่องค้นหา */
+        #searchInput {
+            transition: border-color 0.3s, box-shadow 0.3s;
+            box-sizing: border-box;
+        }
+
+        #searchInput:focus {
+            border-color: var(--primary-color) !important;
+            box-shadow: 0 0 5px rgba(81, 90, 218, 0.3) !important;
+            outline: none;
+        }
+
+        #searchInput::placeholder {
+            color: #999;
+        }
+
+        /* ✨ Animation สำหรับข้อมูลสถิติ */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #searchStats {
+            animation: slideIn 0.3s ease-in;
+        }
+
+        #noResultsMessage {
+            animation: slideIn 0.3s ease-in;
+        } 
+
+        /* Comment styling */
+.comment-text {
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+.comment-text.revision {
+    color: #dc3545;
+    font-weight: 600;
+    background: #fff5f5;
+    padding: 5px 8px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.comment-text.approved {
+    color: #28a745;
+    font-weight: 500;
+}
+
+.comment-text i {
+    margin-right: 4px;
+}
+
+/* Responsive comment column */
+@media (max-width: 768px) {
+    #publicSubmissionsTable th:nth-child(9),
+#publicSubmissionsTable td:nth-child(9) {
+    min-width: 250px; /* กำหนดความกว้างขั้นต่ำ */
+    max-width: none; /* ไม่จำกัดความกว้างสูงสุด */
+}
+}
+
+    /* สำหรับจอภาพขนาดใหญ่ */
+@media (min-width: 1400px) {
+    .container {
+        max-width: 100%;
+        padding: 30px 40px;
+    }
+    
+    #publicSubmissionsTable th:nth-child(9),
+    #publicSubmissionsTable td:nth-child(9) {
+        min-width: 350px; /* เพิ่มความกว้างสำหรับจอใหญ่ */
+    }
+}
+
+@media (min-width: 1920px) {
+    #publicSubmissionsTable th:nth-child(9),
+    #publicSubmissionsTable td:nth-child(9) {
+        min-width: 450px; /* เพิ่มความกว้างสำหรับจอใหญ่พิเศษ */
+    }
+}
+
+    /* ✨ CSS สำหรับคอลัมน์ประเด็นท้าทาย */
+/* ✨ CSS สำหรับคอลัมน์ประเด็นท้าทาย */
+/* ✨ CSS สำหรับคอลัมน์ประเด็นท้าทาย */
+#publicSubmissionsTable td:nth-child(4) {
+    max-width: 400px;
+    word-wrap: break-word;
+    white-space: pre-line !important; /* เปลี่ยนจาก pre-wrap เป็น pre-line */
+    line-height: 1.5;
+    text-indent: 0 !important;
+    text-align: left;
+    padding-left: 12px !important; /* เพิ่ม padding ซ้ายชัดเจน */
+}
+
+@media (max-width: 768px) {
+    #publicSubmissionsTable td:nth-child(4) {
+        max-width: 200px;
+        font-size: 0.8rem;
+        text-indent: 0 !important;
+        white-space: pre-line !important;
+        padding-left: 8px !important;
+    }
+}
+
+    /* 🔥 FORCE FIX - บังคับไม่ให้เยื้อง */
+#publicSubmissionsTable tbody tr td:nth-child(4) {
+    text-indent: 0 !important;
+    padding-left: 12px !important;
+    padding-right: 8px !important;
+    white-space: pre-line !important;
+    text-align: left !important;
+    display: table-cell !important;
+}
+
+/* ลบ pseudo-element ที่อาจทำให้เยื้อง */
+#publicSubmissionsTable tbody tr td:nth-child(4)::before {
+    content: none !important;
+    display: none !important;
+}
+    </style>
+
+</head>
+<body>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <div class="network-status" id="networkStatus"></div>
+
+    <header class="main-header">
+        <img src="https://img2.pic.in.th/pic/sa1.png" alt="Logo โรงเรียนสา">
+        <h1>ระบบส่งแบบข้อตกลงในการพัฒนางาน (PA1) ออนไลน์</h1>
+    </header>
+
+    <nav class="main-nav">
+        <a href="#home" onclick="return showPage('home', this)" class="nav-link active">
+            <i class="fas fa-home"></i><span>หน้าหลัก</span>
+        </a>
+        <a href="#form" onclick="return showPage('form', this)" class="nav-link">
+            <i class="fas fa-file-upload"></i><span>ส่งเอกสาร</span>
+        </a>
+        
+        <a href="https://docs.google.com/document/d/1ImvInpzLvB9V4-nkctlVEOmXHbf34n5T/edit?usp=sharing&ouid=103182413774779251751&rtpof=true&sd=true" target="_blank" class="nav-link" style="color: #d946ef;">
+            <i class="fas fa-file-lines"></i><span>ตัวอย่าง PA1 2569</span>
+        </a>
+        <a href="#dashboard" onclick="return showPage('dashboard', this)" class="nav-link">
+            <i class="fas fa-chart-pie"></i><span>สถิติ</span>
+        </a>
+        <a href="#list" onclick="return showPage('list', this)" class="nav-link">
+            <i class="fas fa-list"></i><span>รายชื่อ</span>
+        </a>
+        <a href="#admin" onclick="return showPage('admin', this)" class="nav-link">
+            <i class="fas fa-user-shield"></i><span>ผู้บริหาร</span>
+        </a>
+        <a href="#settings" onclick="return showPage('settings', this)" class="nav-link">
+            <i class="fas fa-cog"></i><span>ตั้งค่า</span>
+        </a>
+    </nav>
+
+    <div class="container">
+        <!-- หน้าหลัก -->
+        <div id="home-page" class="page-content active">
+            <section>
+                <div class="welcome-card">
+                    <h2><i class="fas fa-star"></i> ยินดีต้อนรับสู่ระบบส่ง PA1 ออนไลน์</h2>
+                    <p>ระบบจัดการเอกสารข้อตกลงในการพัฒนางาน สำหรับคุณครูและบุคลากรโรงเรียนสา</p>
+                    <div class="quick-stats">
+                        <div class="quick-stat">
+                            <span class="quick-stat-number" id="homeTotal">0</span>
+                            <span class="quick-stat-label">ส่งแล้วทั้งหมด</span>
+                        </div>
+                        <div class="quick-stat">
+                            <span class="quick-stat-number" id="homePending">0</span>
+                            <span class="quick-stat-label">รอตรวจสอบ</span>
+                        </div>
+                        <div class="quick-stat">
+                            <span class="quick-stat-number" id="homeApproved">0</span>
+                            <span class="quick-stat-label">ตรวจแล้ว</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="stat-card">
+                        <h3><i class="fas fa-info-circle"></i> คำแนะนำ</h3>
+                        <p style="text-align: left; color: #666; line-height: 1.8; font-size: 0.9rem;">
+                            1. เตรียมไฟล์ PA1 ในรูปแบบ PDF<br>
+                            2. กรอกข้อมูลให้ครบถ้วน<br>
+                            3. ระบุประเด็นท้าทายที่ชัดเจน<br>
+                            4. อัพโหลดไฟล์และส่งเอกสาร<br>
+                            5. ตรวจสอบสถานะการอนุมัติ
+                        </p>
+                    </div>
+                    <div class="stat-card">
+                        <h3><i class="fas fa-clock"></i> เวลาทำการ</h3>
+                        <p style="text-align: left; color: #666; line-height: 1.8; font-size: 0.9rem;">
+                            จันทร์ - ศุกร์<br>
+                            08:00 - 16:30 น.<br>
+                            <br>
+                            <small>หากมีปัญหาติดต่อ งานเทคโนโลยี</small>
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- หน้าส่งเอกสาร -->
+        <div id="form-page" class="page-content">
+            <section>
+                <h2><i class="fas fa-file-upload"></i> ฟอร์มส่งข้อตกลงในการพัฒนางาน (PA1)</h2>
+                <form id="pa1Form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="fullName"><i class="fas fa-user"></i>ชื่อ-นามสกุล (พร้อมคำนำหน้า)</label>
+                            <input type="text" id="fullName" name="fullName" required placeholder="เช่น นาย/นาง/นางสาว ชื่อ นามสกุล" autocomplete="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="position"><i class="fas fa-user-tie"></i>ตำแหน่ง</label>
+                            <select id="position" name="position" required>
+                                <option value="">-- เลือกตำแหน่ง --</option>
+                                <option value="ครู">ครู</option>
+                                <option value="ผู้บริหาร">ผู้บริหาร</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="academicStanding"><i class="fas fa-graduation-cap"></i>วิทยฐานะ</label>
+                            <select id="academicStanding" name="academicStanding" required>
+                                <option value="">-- เลือกวิทยฐานะ --</option>
+                                <option value="ไม่มีวิทยฐานะ">ไม่มีวิทยฐานะ</option>
+                                <option value="ชำนาญการ">ชำนาญการ</option>
+                                <option value="ชำนาญการพิเศษ">ชำนาญการพิเศษ</option>
+                                <option value="เชี่ยวชาญ">เชี่ยวชาญ</option>
+                                <option value="เชี่ยวชาญพิเศษ">เชี่ยวชาญพิเศษ</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="learningGroup"><i class="fas fa-book"></i>กลุ่มสาระการเรียนรู้</label>
+                            <select id="learningGroup" name="learningGroup" required>
+                                <option value="">-- เลือกกลุ่มสาระ --</option>
+                                <option value="วิทยาศาสตร์และเทคโนโลยี">วิทยาศาสตร์และเทคโนโลยี</option>
+                                <option value="คณิตศาสตร์">คณิตศาสตร์</option>
+                                <option value="ศิลปะ">ศิลปะ</option>
+                                <option value="ภาษาไทย">ภาษาไทย</option>
+                                <option value="ภาษาต่างประเทศ">ภาษาต่างประเทศ</option>
+                                <option value="สังคมศึกษา ศาสนาและวัฒนธรรม">สังคมศึกษา ศาสนาและวัฒนธรรม</option>
+                                <option value="การงานอาชีพ">การงานอาชีพ</option>
+                                <option value="สุขศึกษาและพลศึกษา">สุขศึกษาและพลศึกษา</option>
+                                <option value="กิจกรรมพัฒนาผู้เรียน">กิจกรรมพัฒนาผู้เรียน</option>
+                                <option value="อื่นๆ">อื่นๆ</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="challenge"><i class="fas fa-lightbulb"></i>ประเด็นท้าทาย</label>
+                            <textarea id="challenge" name="challenge" rows="4" required 
+                                      placeholder="ระบุประเด็นท้าทายในการพัฒนางานของท่าน..."></textarea>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="fileUpload"><i class="fas fa-paperclip"></i>แนบไฟล์ PA1 (เฉพาะ .pdf เท่านั้น, ขนาดไม่เกิน 10MB)</label>
+                            <div class="file-input-wrapper" id="fileDropZone">
+                                <div class="file-input-label">
+                                    <i class="fas fa-cloud-upload-alt file-input-icon"></i>
+                                    <div>คลิกเพื่อเลือกไฟล์ PDF หรือลากไฟล์มาวางที่นี่</div>
+                                </div>
+                                <span id="fileName"></span>
+                                <div class="file-progress" id="fileProgress">
+                                    <div class="file-progress-bar" id="fileProgressBar"></div>
+                                </div>
+                                <input type="file" id="fileUpload" name="fileUpload" accept=".pdf" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="submit-btn full-width" id="submitBtn">
+                            <i class="fas fa-spinner fa-spin loading-spinner"></i>
+                            <i class="fas fa-paper-plane"></i>ส่งข้อมูล
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </div>
+
+        <!-- หน้าสถิติ -->
+        <div id="dashboard-page" class="page-content">
+            <section>
+                <h2><i class="fas fa-chart-pie"></i> สถิติการส่ง PA1</h2>
+                <div class="dashboard-grid">
+                    <div class="stat-card">
+                        <h3><i class="fa-solid fa-cloud-arrow-up"></i> ส่งแล้วทั้งหมด</h3>
+                        <div class="stat-number" id="totalCount">0</div>
+                    </div>
+                    <div class="stat-card" style="border-left-color: orange;">
+                        <h3><i class="fa-solid fa-star"></i> รอตรวจสอบ</h3>
+                        <div class="stat-number" id="pendingCount">0</div>
+                    </div>
+                    <div class="stat-card" style="border-left-color: green;">
+                        <h3><i class="fa-solid fa-circle-check"></i> ตรวจแล้ว</h3>
+                        <div class="stat-number" id="approvedCount">0</div>
+                    </div>
+                    <div class="stat-card" style="border-left-color: red;">
+                        <h3><i class="fa-solid fa-triangle-exclamation"></i> รอแก้ไข</h3>
+                        <div class="stat-number" id="revisionCount">0</div>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <canvas id="subjectChart"></canvas>
+                </div>
+            </section>
+        </div>
+
+        <!-- หน้ารายชื่อผู้ส่ง -->
+        <div id="list-page" class="page-content">
+    <section>
+        <h2><i class="fas fa-users"></i> รายชื่อผู้ส่งเอกสาร PA1</h2>
+        
+        <!-- ✨ ช่องค้นหา + ปุ่มล้าง -->
+        <div style="margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 200px;">
+                <input type="text" 
+                       id="searchInput" 
+                       placeholder="🔍 ค้นหาชื่อผู้ส่ง..." 
+                       style="width: 100%; padding: 10px 12px; border: 2px solid #ddd; border-radius: 8px; font-family: 'Prompt', sans-serif; font-size: 0.95rem; transition: all 0.3s;"
+                       onkeyup="filterTable(this.value)">
+            </div>
+            <button onclick="clearSearch()" 
+                    style="padding: 10px 15px; background: #999; color: white; border: none; border-radius: 8px; cursor: pointer; font-family: 'Prompt', sans-serif; font-weight: 500; transition: all 0.3s; white-space: nowrap;">
+                <i class="fas fa-times"></i> ล้าง
+            </button>
+        </div>
+
+        <!-- ✨ สถิติการค้นหา -->
+        <div id="searchStats" style="display: none; padding: 10px 12px; background: #f0f0f0; border-radius: 8px; margin-bottom: 15px; font-size: 0.9rem; color: #666; animation: slideIn 0.3s ease-in;">
+            ค้นพบ <strong id="resultCount">0</strong> รายการ
+        </div>
+
+        <!-- ✨ ตาราง -->
+        <div class="status-table-wrapper">
+            <table id="publicSubmissionsTable">
+    <thead>
+        <tr>
+            <th style="width: 5%;">ลำดับ</th>
+            <th style="width: 12%;">วันที่ส่ง</th>
+            <th style="width: 15%;">ชื่อ-นามสกุล</th>
+            <th style="width: 30%;">ประเด็นท้าทาย</th> <!-- เพิ่มจาก 14% เป็น 30% -->
+            <th style="width: 10%;">สถานะ</th>
+            <th style="width: 10%;">ทันเวลา</th>
+            <th style="width: 18%;">ความคิดเห็นจากผู้บริหาร</th> <!-- ลดจาก 30% เป็น 18% -->
+        </tr>
+    </thead>
+                <tbody id="publicSubmissionsTableBody">
+                    <tr>
+                        <td colspan="8" style="text-align:center; padding: 30px; color: #999;">
+                            <i class="fas fa-spinner fa-spin"></i> กำลังโหลดข้อมูล...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ✨ ข้อความเมื่อไม่พบผลการค้นหา -->
+        <!-- ✨ ข้อความเมื่อไม่พบผลการค้นหา -->
+<div id="noResultsMessage" style="display: none; text-align: center; padding: 30px; color: #999; animation: slideIn 0.3s ease-in;">
+    <i class="fas fa-search" style="font-size: 2rem; margin-bottom: 10px; display: block;"></i>
+    <p>ไม่พบผลการค้นหา</p>
+</div>
+    </section>
+</div>
+
+        <!-- หน้าผู้บริหาร -->
+        <div id="admin-page" class="page-content">
+            <section>
+                <h2><i class="fas fa-user-shield"></i> สำหรับผู้บริหารและผู้ตรวจสอบ</h2>
+                <div id="adminLogin" class="admin-login">
+                    <i class="fas fa-lock" style="font-size: 2.5rem; color: var(--primary-color); margin-bottom: 15px;"></i>
+                    <h3>ระบบจัดการเอกสาร</h3>
+                    <p>ส่วนนี้สำหรับผู้บริหารเพื่อตรวจสอบและอนุมัติเอกสาร PA1</p>
+                    <button id="loginBtn" class="admin-btn">
+                        <i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ
+                    </button>
+                </div>
+                <div id="adminView" style="display: none;">
+                    <h3 style="color: var(--primary-color); margin-bottom: 20px;">
+                        <i class="fas fa-tasks"></i> รายการส่งเอกสารทั้งหมด
+                    </h3>
+                    <div class="status-table-wrapper">
+                        <table id="statusTable">
+                            <thead>
+                                <tr>
+                                    <th style="width: 12%;">เวลาที่ส่ง</th>
+                                    <th style="width: 15%;">ชื่อ-สกุล</th>
+                                    <th style="width: 8%;">ตำแหน่ง</th>
+                                    <th style="width: 15%;">กลุ่มสาระฯ</th>
+                                    <th style="width: 20%;">ประเด็นท้าทาย</th>
+                                    <th style="width: 8%;">ไฟล์แนบ</th>
+                                    <th style="width: 10%;">สถานะ</th>
+                                    <th style="width: 15%;">ความคิดเห็น</th>
+                                    <th style="width: 7%;">จัดการ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="statusTableBody">
+                                <tr>
+                                    <td colspan="9" style="text-align:center; padding: 30px;">
+                                        ยังไม่มีข้อมูลการส่ง
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    </div>
+
+        <!-- หน้าตั้งค่า (เฉพาะผู้ดูแลระบบ) -->
+        <div id="settings-page" class="page-content">
+            <section>
+                <h2><i class="fas fa-cog"></i> ตั้งค่าระบบ</h2>
+                
+                <div id="settingsLogin" class="admin-login">
+                    <i class="fas fa-lock" style="font-size: 2.5rem; color: var(--primary-color); margin-bottom: 15px;"></i>
+                    <h3>ตั้งค่าระบบ PA1</h3>
+                    <p>ส่วนนี้สำหรับผู้ดูแลระบบเท่านั้น</p>
+                    <button id="settingsLoginBtn" class="admin-btn">
+                        <i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ
+                    </button>
+                </div>
+
+                <div id="settingsView" style="display: none;">
+                    <div class="form-grid" style="max-width: 600px; margin: 0 auto;">
+                        
+                        <div class="form-group full-width">
+    <label for="deadlineDate"><i class="fas fa-calendar-alt"></i> วันเวลาส่งงาน (Deadline)</label>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+        <input type="text" 
+               id="deadlineDate" 
+               name="deadlineDate" 
+               placeholder="2568-12-30" 
+               pattern="\d{4}-\d{2}-\d{2}"
+               title="ใส่วันที่ในรูป YYYY-MM-DD เช่น 2568-12-15"
+               required>
+        <input type="time" 
+               id="deadlineTime" 
+               name="deadlineTime" 
+               value="23:59" 
+               required>
+    </div>
+    <small style="color: #666; margin-top: 5px; display: block;">
+        <i class="fas fa-info-circle"></i> ตัวอย่าง: 2568-12-30 เวลา 23:59 (รูป YYYY-MM-DD)
+    </small>
+</div>
+
+                        <div class="form-group full-width">
+                            <label for="timezoneInput"><i class="fas fa-globe"></i> เขตเวลา</label>
+                            <select id="timezoneInput" name="timezoneInput">
+                                <option value="Asia/Bangkok" selected>เวลาประเทศไทย (Asia/Bangkok)</option>
+                                <option value="Asia/Ho_Chi_Minh">เวลาเวียดนาม (Asia/Ho_Chi_Minh)</option>
+                                <option value="Asia/Phnom_Penh">เวลากัมพูชา (Asia/Phnom_Penh)</option>
+                                <option value="UTC">UTC</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="allowLateInput"><i class="fas fa-hourglass-end"></i> อนุญาตให้ส่งล่าช้า</label>
+                            <select id="allowLateInput" name="allowLateInput">
+                                <option value="true" selected>อนุญาต</option>
+                                <option value="false">ไม่อนุญาต</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="lateDaysInput"><i class="fas fa-calendar-plus"></i> อนุญาตให้ส่งล่าช้ากี่วัน</label>
+                            <input type="number" id="lateDaysInput" name="lateDaysInput" min="0" max="30" value="7" required>
+                        </div>
+
+                        <button onclick="loadCurrentSettings()" class="admin-btn" style="grid-column: 1 / -1; width: 100%; margin-bottom: 10px;">
+                            <i class="fas fa-refresh"></i> โหลดค่าปัจจุบัน
+                        </button>
+
+                        <button onclick="saveSettings()" class="submit-btn" style="grid-column: 1 / -1;">
+                            <i class="fas fa-save"></i> บันทึกการเปลี่ยนแปลง
+                        </button>
+                    </div>
+
+                    <div style="margin-top: 30px; padding: 15px; background: #e9d5ff; border-radius: 8px;">
+                        <h4 style="margin-top: 0; color: #515ada;"><i class="fas fa-info-circle"></i> ข้อมูลปัจจุบัน</h4>
+                        <p id="currentDeadlineInfo" style="margin: 5px 0; color: #555;"></p>
+                        <p id="currentTimezoneInfo" style="margin: 5px 0; color: #555;"></p>
+                        <p id="currentLateInfo" style="margin: 5px 0; color: #555;"></p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+
+    <footer class="main-footer">
+        <p>พัฒนาโดย งานเทคโนโลยี :: โรงเรียนสา | Saschool<br>
+        © 2568 ระบบ PA1 ออนไลน์</p>
+    </footer>
+    
+    <script>
+        // === CONFIGURATION ===
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyI0uWWn89POLblmv06UZTi8Fi8wZjnYxTk8NPWpac6GKwJZY7iTg8DOWATCCaBrjnb/exec';
+        
+        const subjectGroups = [
+            "วิทยาศาสตร์และเทคโนโลยี", 
+            "คณิตศาสตร์", 
+            "ศิลปะ", 
+            "ภาษาไทย", 
+            "ภาษาต่างประเทศ", 
+            "สังคมศึกษา ศาสนาและวัฒนธรรม", 
+            "การงานอาชีพ", 
+            "สุขศึกษาและพลศึกษา", 
+            "กิจกรรมพัฒนาผู้เรียน",
+            "อื่นๆ"
+        ];
+        
+        const statusOptions = ["รอตรวจ ⭐", "ตรวจแล้ว ✅", "รอแก้ไข ❗"];
+        
+        let chartInstance = null;
+        let cachedData = [];
+        let dataLastUpdated = 0;
+        const CACHE_DURATION = 60000; // 1 minute cache
+
+        // === Network Status Monitoring ===
+        function updateNetworkStatus() {
+            const statusEl = document.getElementById('networkStatus');
+            if (navigator.onLine) {
+                statusEl.className = 'network-status online';
+                statusEl.textContent = '🟢 ออนไลน์';
+                statusEl.style.display = 'none'; // Hide when online
+            } else {
+                statusEl.className = 'network-status offline';
+                statusEl.textContent = '🔴 ออฟไลน์';
+                statusEl.style.display = 'block';
+            }
+        }
+
+        window.addEventListener('online', updateNetworkStatus);
+        window.addEventListener('offline', updateNetworkStatus);
+
+        // === Performance Optimization ===
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        function throttle(func, limit) {
+            let inThrottle;
+            return function() {
+                const args = arguments;
+                const context = this;
+                if (!inThrottle) {
+                    func.apply(context, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
+            }
+        }
+
+        // === Loading Overlay ===
+        function showLoading(message = 'กำลังประมวลผล...') {
+            const overlay = document.getElementById('loadingOverlay');
+            overlay.style.display = 'flex';
+        }
+
+        function hideLoading() {
+            const overlay = document.getElementById('loadingOverlay');
+            overlay.style.display = 'none';
+        }
+
+        // === Page Navigation (Optimized) ===
+        function showPage(pageName, linkElement) {
+            if (event) {
+                event.preventDefault();
+            }
+            
+            // Use requestAnimationFrame for smooth transitions
+            requestAnimationFrame(() => {
+                document.querySelectorAll('.page-content').forEach(page => {
+                    page.classList.remove('active');
+                });
+                
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                });
+                
+                const targetPage = document.getElementById(`${pageName}-page`);
+                if (targetPage) {
+                    targetPage.classList.add('active');
+                }
+                
+                if (linkElement) {
+                    linkElement.classList.add('active');
+                }
+                
+                // Lazy load chart when dashboard is shown
+                if (pageName === 'dashboard' && cachedData.length > 0) {
+                    setTimeout(() => updateDashboard(cachedData), 100);
+                }
+                
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            
+            return false;
+        }
+
+        // === Enhanced File Upload with Drag & Drop ===
+        function initFileUpload() {
+            // Initialize PA1 file upload only
+            const fileInput = document.getElementById('fileUpload');
+            const dropZone = document.getElementById('fileDropZone');
+            const fileName = document.getElementById('fileName');
+            const progress = document.getElementById('fileProgress');
+            const progressBar = document.getElementById('fileProgressBar');
+
+            if (!fileInput || !dropZone) return;
+
+            // Drag and drop handlers
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('dragover');
+            });
+
+            dropZone.addEventListener('dragleave', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('dragover');
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('dragover');
+                
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    handleFileSelect(files[0], fileName, progress, progressBar, fileInput);
+                }
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    handleFileSelect(e.target.files[0], fileName, progress, progressBar, fileInput);
+                }
+            });
+        }
+
+        function handleFileSelect(file, fileName, progress, progressBar, fileInput) {
+            if (!file) return;
+
+            // Validate file type (PDF only for PA1)
+            if (file.type !== 'application/pdf') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ไฟล์ไม่ถูกต้อง',
+                    text: 'กรุณาเลือกไฟล์ PDF เท่านั้น',
+                    confirmButtonColor: '#7c3aed'
+                });
+                return;
+            }
+
+            // Validate file size (10MB)
+            if (file.size > 10 * 1024 * 1024) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ไฟล์ใหญ่เกินไป',
+                    text: 'ขนาดไฟล์ต้องไม่เกิน 10MB',
+                    confirmButtonColor: '#7c3aed'
+                });
+                return;
+            }
+
+            // Show file name and simulate progress
+            fileName.textContent = `✅ ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+            progress.style.display = 'block';
+            
+            // Simulate upload progress
+            let progressValue = 0;
+            const progressInterval = setInterval(() => {
+                progressValue += Math.random() * 30;
+                if (progressValue >= 100) {
+                    progressValue = 100;
+                    clearInterval(progressInterval);
+                    setTimeout(() => {
+                        progress.style.display = 'none';
+                    }, 500);
+                }
+                progressBar.style.width = progressValue + '%';
+            }, 100);
+
+            // Update the file input
+            const dt = new DataTransfer();
+            dt.items.add(file);
+            fileInput.files = dt.files;
+        }
+
+        // === Optimized Form Submit Handler ===
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const file = document.getElementById('fileUpload').files[0];
+            
+            // Validation
+            if (!file) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ไม่พบไฟล์',
+                    text: 'กรุณาแนบไฟล์ PDF',
+                    confirmButtonColor: '#7c3aed'
+                });
+                return;
+            }
+            
+            // Disable submit button and show loading
+            submitBtn.disabled = true;
+            submitBtn.classList.add('loading');
+            
+            // Use FileReader with progress monitoring
+            const reader = new FileReader();
+            
+            reader.onloadstart = () => {
+                showLoading('กำลังอ่านไฟล์...');
+            };
+            
+            reader.onprogress = (e) => {
+                if (e.lengthComputable) {
+                    const percentLoaded = Math.round((e.loaded / e.total) * 100);
+                    // Could show progress here if needed
+                }
+            };
+            
+            reader.onload = () => {
+                try {
+                    hideLoading();
+                    showLoading('กำลังส่งข้อมูล...');
+                    
+                    const base64Data = reader.result.split(',')[1];
+                    const formData = new FormData(e.target);
+                    
+                    const fileData = {
+                        base64: base64Data,
+                        fileName: file.name,
+                        mimeType: file.type
+                    };
+                    
+                    const data = {
+                        fullName: formData.get('fullName').trim(),
+                        position: formData.get('position'),
+                        academicStanding: formData.get('academicStanding'),
+                        challenge: formData.get('challenge').trim(),
+                        learningGroup: formData.get('learningGroup'),
+                        fileData: JSON.stringify(fileData)
+                    };
+                    
+                    // Use URLSearchParams for better encoding
+                    const params = new URLSearchParams();
+                    Object.keys(data).forEach(key => {
+                        params.append(key, data[key]);
+                    });
+                    
+                    // Send with timeout and retry logic
+                    submitWithRetry(params)
+                        .then(result => {
+                            hideLoading();
+                            
+                            if (result.status === 'success') {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'สำเร็จ!',
+                                    text: 'ส่งข้อมูลเรียบร้อยแล้ว',
+                                    confirmButtonColor: '#515ada',
+                                    timer: 3000,
+                                    timerProgressBar: true
+                                }).then(() => {
+                                    // Reset form and navigate
+                                    document.getElementById('pa1Form').reset();
+                                    document.getElementById('fileName').textContent = '';
+                                    showPage('list', document.querySelector('.nav-link[href="#list"]'));
+                                });
+                                
+                                // Invalidate cache to force refresh
+                                dataLastUpdated = 0;
+                                setTimeout(() => fetchAndDisplayData(), 1000);
+                            } else {
+                                throw new Error(result.message || 'เกิดข้อผิดพลาด');
+                            }
+                        })
+                        .catch(error => {
+                            hideLoading();
+                            console.error('Submit error:', error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'เกิดข้อผิดพลาด',
+                                text: 'ไม่สามารถส่งข้อมูลได้ กรุณาลองใหม่อีกครั้ง',
+                                confirmButtonColor: '#7c3aed'
+                            });
+                        })
+                        .finally(() => {
+                            submitBtn.disabled = false;
+                            submitBtn.classList.remove('loading');
+                        });
+                        
+                } catch (error) {
+                    hideLoading();
+                    console.error('File reading error:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'เกิดข้อผิดพลาด',
+                        text: 'ไม่สามารถอ่านไฟล์ได้',
+                        confirmButtonColor: '#7c3aed'
+                    });
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('loading');
+                }
+            };
+            
+            reader.onerror = () => {
+                hideLoading();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาด',
+                    text: 'ไม่สามารถอ่านไฟล์ได้',
+                    confirmButtonColor: '#7c3aed'
+                });
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('loading');
+            };
+            
+            reader.readAsDataURL(file);
+        }
+
+        // === Submit with Retry Logic ===
+        async function submitWithRetry(params, maxRetries = 3) {
+            for (let attempt = 1; attempt <= maxRetries; attempt++) {
+                try {
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+                    
+                    const response = await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        body: params,
+                        signal: controller.signal
+                    });
+                    
+                    clearTimeout(timeoutId);
+                    
+                    const text = await response.text();
+                    return JSON.parse(text);
+                    
+                } catch (error) {
+                    console.warn(`Attempt ${attempt} failed:`, error);
+                    
+                    if (attempt === maxRetries) {
+                        throw error;
+                    }
+                    
+                    // Wait before retry (exponential backoff)
+                    await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 1000));
+                }
+            }
+        }
+
+        // === Admin Login Handler ===
+        async function handleAdminLogin() {
+            const { value: password } = await Swal.fire({
+                title: 'กรุณาใส่รหัสผ่านผู้บริหาร',
+                input: 'password',
+                inputPlaceholder: 'ใส่รหัสผ่าน...',
+                showCancelButton: true,
+                confirmButtonText: 'เข้าสู่ระบบ',
+                cancelButtonText: 'ยกเลิก',
+                confirmButtonColor: '#515ada',
+                cancelButtonColor: '#999',
+                inputValidator: (value) => {
+                    if (!value) {
+                        return 'กรุณาใส่รหัสผ่าน'
+                    }
+                }
+            });
+            
+            if (password) {
+                if (password === 'silverfish') {
+                    document.getElementById('adminLogin').style.display = 'none';
+                    document.getElementById('adminView').style.display = 'block';
+                    dataLastUpdated = 0; // Force refresh
+                    fetchAndDisplayData();
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'รหัสผ่านไม่ถูกต้อง!',
+                        confirmButtonColor: '#7c3aed'
+                    });
+                }
+            }
+        }
+
+        // === Optimized Fetch and Display Data ===
+        function fetchAndDisplayData() {
+            // Check cache first
+            const now = Date.now();
+            if (cachedData.length > 0 && (now - dataLastUpdated) < CACHE_DURATION) {
+                console.log('Using cached data');
+                updateAllViews(cachedData);
+                return;
+            }
+
+            console.log('Fetching fresh data...');
+            
+            // Show loading only for admin table if visible
+            const statusTableBody = document.getElementById('statusTableBody');
+            const adminView = document.getElementById('adminView');
+            
+            if (statusTableBody && adminView && adminView.style.display !== 'none') {
+                statusTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align:center; padding: 30px; color: #999;"> <!-- เปลี่ยนจาก 9 เป็น 7 -->
+                            <i class="fas fa-spinner fa-spin"></i> กำลังโหลดข้อมูล...
+                        </td>
+                    </tr>`;
+            }
+            
+            // Use fetch with timeout
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+            
+            fetch(`${SCRIPT_URL}?action=getData&t=${Date.now()}`, {
+                signal: controller.signal
+            })
+                .then(response => {
+                    clearTimeout(timeoutId);
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(text => {
+                    try {
+                        const data = JSON.parse(text);
+                        
+                        if (data.status === 'success' && Array.isArray(data.records)) {
+                            console.log(`Found ${data.records.length} records`);
+                            cachedData = data.records;
+                            dataLastUpdated = Date.now();
+                            
+                            // Update all views
+                            updateAllViews(data.records);
+                        } else {
+                            console.log('No data found');
+                            handleEmptyData();
+                        }
+                        
+                    } catch (parseError) {
+                        console.error('JSON parse error:', parseError);
+                        handleDataError('ไม่สามารถแปลงข้อมูลได้');
+                    }
+                })
+                .catch(error => {
+                    clearTimeout(timeoutId);
+                    console.error('Fetch error:', error);
+                    
+                    if (error.name === 'AbortError') {
+                        handleDataError('การเชื่อมต่อใช้เวลานานเกินไป');
+                    } else {
+                        handleDataError('ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้');
+                    }
+                });
+        }
+
+        function updateAllViews(records) {
+            try {
+                populateStatusTable(records);
+                updateDashboard(records);
+                populatePublicSubmissionsTable(records);
+                updateHomeStats(records);
+            } catch (error) {
+                console.error('Error updating views:', error);
+            }
+        }
+
+        function handleEmptyData() {
+            try {
+                populateStatusTable([]);
+                updateDashboard([]);
+                populatePublicSubmissionsTable([]);
+                updateHomeStats([]);
+            } catch (error) {
+                console.error('Error handling empty data:', error);
+            }
+        }
+
+        function handleDataError(message) {
+            const statusTableBody = document.getElementById('statusTableBody');
+            const adminView = document.getElementById('adminView');
+            
+            if (statusTableBody && adminView && adminView.style.display !== 'none') {
+                statusTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="9" style="text-align:center; padding: 30px; color: red;">
+                            ⚠️ ${message}<br>
+                            <button onclick="fetchAndDisplayData()" class="admin-btn" style="margin-top: 10px; padding: 5px 15px;">
+                                <i class="fas fa-redo"></i> ลองใหม่
+                            </button>
+                        </td>
+                    </tr>`;
+            }
+        }
+
+        // === Update Home Stats ===
+        function updateHomeStats(records) {
+            if (!records) records = [];
+            
+            const totalSubmissions = records.length;
+            
+            const statusCounts = records.reduce((acc, curr) => {
+                const status = curr.status ? curr.status.trim() : '';
+                if (status.includes('✅')) acc.approved++;
+                else if (status.includes('❗')) acc.revision++;
+                else if (status.includes('⭐')) acc.pending++;
+                return acc;
+            }, { approved: 0, revision: 0, pending: 0 });
+            
+            // Animate numbers
+            animateNumber('homeTotal', totalSubmissions);
+            animateNumber('homePending', statusCounts.pending);
+            animateNumber('homeApproved', statusCounts.approved);
+        }
+
+        // === Animate Number Updates ===
+        function animateNumber(elementId, targetValue) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            
+            const currentValue = parseInt(element.textContent) || 0;
+            const difference = targetValue - currentValue;
+            const duration = 1000; // 1 second
+            const steps = 30;
+            const stepValue = difference / steps;
+            const stepDuration = duration / steps;
+            
+            let currentStep = 0;
+            const timer = setInterval(() => {
+                currentStep++;
+                const newValue = Math.round(currentValue + (stepValue * currentStep));
+                element.textContent = Math.min(newValue, targetValue);
+                
+                if (currentStep >= steps) {
+                    element.textContent = targetValue;
+                    clearInterval(timer);
+                }
+            }, stepDuration);
+        }
+
+        // === Populate Status Table (Admin View) - Optimized ===
+        function populateStatusTable(records) {
+            const statusTableBody = document.getElementById('statusTableBody');
+            
+            if (!statusTableBody || document.getElementById('adminView').style.display === 'none') {
+                return;
+            }
+            
+            if (!records || records.length === 0) {
+                statusTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="9" style="text-align:center; padding: 30px; color: #999;">
+                            ยังไม่มีข้อมูลการส่ง
+                        </td>
+                    </tr>`;
+                return;
+            }
+            
+            // Use document fragment for better performance
+            const fragment = document.createDocumentFragment();
+            
+            records.slice().reverse().forEach((record, index) => {
+                const row = document.createElement('tr');
+                
+                const date = new Date(record.timestamp);
+                const formattedDate = date.toLocaleString('th-TH', {
+                    dateStyle: 'short',
+                    timeStyle: 'short'
+                });
+                
+                const statusDropdown = `
+                    <select class="status-select" data-row="${record.rowNum || index + 2}">
+                        ${statusOptions.map(opt => 
+                            `<option value="${opt}" ${record.status === opt ? 'selected' : ''}>${opt}</option>`
+                        ).join('')}
+                    </select>`;
+                
+                const commentField = `
+                    <input type="text" 
+                           class="comment-input" 
+                           value="${(record.comment || '').replace(/"/g, '&quot;')}" 
+                           data-row="${record.rowNum || index + 2}"
+                           placeholder="เพิ่มความเห็น...">`;
+                
+                const saveButton = `
+                    <button onclick="handleUpdate(${record.rowNum || index + 2})" 
+                            class="btn-save" 
+                            title="บันทึกการเปลี่ยนแปลง">
+                        <i class="fas fa-save"></i>
+                    </button>`;
+                
+                // Safe string handling
+                const challenge = record.challenge || '';
+const challengeText = challenge.length > 50 ? challenge.substring(0, 50) + '...' : challenge;
+
+// ✨ เพิ่มส่วนนี้
+let timelinessDisplay = '<span style="color: gray;">ไม่ทราบ</span>';
+if (record.timelinessStatus) {
+    if (record.timelinessStatus === 'ทันเวลา') {
+        timelinessDisplay = '<span style="color: green; font-weight: bold;">✅ ทันเวลา</span>';
+    } else if (record.timelinessStatus === 'ล่าช้า') {
+        timelinessDisplay = `<span style="color: orange; font-weight: bold;">⏰ ล่าช้า ${record.daysLate || 0} วัน</span>`;
+    }
+}
+
+row.innerHTML = `
+    <td>${formattedDate}</td>
+    <td><strong>${record.fullName || ''}</strong></td>
+    <td>${record.position || ''}</td>
+    <td>${record.learningGroup || ''}</td>
+    <td title="${challenge}">${challengeText}</td>
+    <td><a href="${record.fileUrl || '#'}" target="_blank" title="เปิดไฟล์ในแท็บใหม่"><i class="fas fa-external-link-alt"></i></a></td>
+    <td>${statusDropdown}</td>
+    <td>${commentField}</td>
+    <td>${timelinessDisplay}</td> 
+    <td>${saveButton}</td>`;
+                
+                fragment.appendChild(row);
+            });
+            
+            statusTableBody.innerHTML = '';
+            statusTableBody.appendChild(fragment);
+        }
+
+        // Global variable สำหรับเก็บข้อมูลจริง
+let allRecords = [];
+
+// === Populate Public Submissions Table - Optimized with Challenge Column ===
+function populatePublicSubmissionsTable(records) {
+    const publicTableBody = document.getElementById('publicSubmissionsTableBody');
+    
+    if (!publicTableBody) {
+        console.warn('Public submissions table body not found');
+        return;
+    }
+    
+    // เก็บข้อมูลสำเร็จ
+    allRecords = records || [];
+    
+    if (!records || records.length === 0) {
+        publicTableBody.innerHTML = `
+            <tr>
+                <td colspan="9" style="text-align:center; padding: 30px; color: #999;">
+                     ยังไม่มีข้อมูลการส่ง
+                </td>
+            </tr>`;
+        return;
+    }
+    
+    // ล้างค่าค้นหา
+    clearSearch();
+    
+    // แสดงข้อมูล
+    displayTableRows(records);
+}
+
+// === ฟังก์ชัน Display Table Rows ===
+// === ฟังก์ชัน Display Table Rows ===
+function displayTableRows(records) {
+    const publicTableBody = document.getElementById('publicSubmissionsTableBody');
+    
+    if (!publicTableBody) return;
+    
+    if (!records || records.length === 0) {
+        publicTableBody.innerHTML = `
+            <tr>
+                <td colspan="7" style="text-align:center; padding: 30px; color: #999;">
+                    ยังไม่มีข้อมูลการส่ง
+                </td>
+            </tr>`;
+        document.getElementById('searchStats').style.display = 'none';
+        document.getElementById('noResultsMessage').style.display = 'none';
+        return;
+    }
+    
+    const fragment = document.createDocumentFragment();
+    
+    records.slice().reverse().forEach((record, index) => {
+        const row = document.createElement('tr');
+        
+        const date = new Date(record.timestamp);
+        const formattedDate = date.toLocaleString('th-TH', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        
+        // ✨ แสดงประเด็นท้าทายเต็มข้อความ (ไม่ตัด)
+        let challengeText = record.challenge || '-';
+        
+        // สถานะอนุมัติ
+        let statusClass = 'pending';
+        let statusText = 'รอตรวจสอบ';
+        
+        const status = record.status || '';
+        if (status.includes('✅')) {
+            statusClass = 'approved';
+            statusText = '✅ ตรวจแล้ว';
+        } else if (status.includes('❗')) {
+            statusClass = 'revision';
+            statusText = '❗ รอแก้ไข';
+        } else if (status.includes('⭐')) {
+            statusClass = 'pending';
+            statusText = '⭐ รอตรวจ';
+        }
+        
+        // สถานะทันเวลา
+        let timelinessClass = 'unknown';
+        let timelinessText = 'ไม่ทราบ';
+        
+        if (record.timelinessStatus) {
+            if (record.timelinessStatus === 'ทันเวลา') {
+                timelinessClass = 'ontime';
+                timelinessText = '✅ ทันเวลา';
+            } else if (record.timelinessStatus === 'ล่าช้า') {
+                timelinessClass = 'late';
+                timelinessText = `⏰ ล่าช้า ${record.daysLate || 0} วัน`;
+            }
+        }
+        
+        // ✨ จัดการคอมเมนท์
+        let commentDisplay = '-';
+        let commentStyle = 'color: #999;';
+        
+        if (record.comment && record.comment.trim() !== '') {
+            const comment = record.comment.trim();
+            
+            // ถ้าเป็นสถานะรอแก้ไข ให้แสดงคอมเมนท์เด่นชัด
+            if (status.includes('❗')) {
+                commentStyle = 'color: #dc3545; font-weight: 600; background: #fff5f5; padding: 5px 8px; border-radius: 4px; display: inline-block;';
+                commentDisplay = `<i class="fas fa-exclamation-circle"></i> ${comment}`;
+            } 
+            // ถ้าตรวจแล้ว แสดงคอมเมนท์ปกติ
+            else if (status.includes('✅')) {
+                commentStyle = 'color: #28a745; font-weight: 500;';
+                commentDisplay = `<i class="fas fa-check-circle"></i> ${comment}`;
+            }
+            // สถานะอื่นๆ
+            else {
+                commentStyle = 'color: #666;';
+                commentDisplay = comment;
+            }
+        }
+        
+        // ✨ แก้ไขส่วน innerHTML - ตัดคอลัมน์กลุ่มสาระฯ และตำแหน่งออก
+        row.innerHTML = `
+    <td style="text-align: center;"><strong>${index + 1}</strong></td>
+    <td>${formattedDate}</td>
+    <td><strong>${record.fullName || ''}</strong></td>
+    <td style="color: #666; font-size: 0.9rem; line-height: 1.5; padding: 12px 12px 12px 12px; word-wrap: break-word; white-space: pre-line; text-indent: 0 !important; text-align: left;">
+        ${challengeText}
+    </td>
+            <td>
+                <span class="status-badge ${statusClass}">
+                    ${statusText}
+                </span>
+            </td>
+            <td>
+                <span class="timeliness-badge ${timelinessClass}">
+                    ${timelinessText}
+                </span>
+            </td>
+            <td style="${commentStyle} font-size: 0.85rem;">
+                ${commentDisplay}
+            </td>`;
+        
+        // ✨ อัปเดต data-search ให้ไม่มีกลุ่มสาระฯ และตำแหน่ง
+        row.setAttribute('data-search', `${record.fullName} ${record.challenge}`.toLowerCase());
+        row.setAttribute('data-index', index);
+        
+        fragment.appendChild(row);
+    });
+    
+    publicTableBody.innerHTML = '';
+    publicTableBody.appendChild(fragment);
+    
+    updateSearchStats(records.length);
+    document.getElementById('noResultsMessage').style.display = 'none';
+}
+
+// === ฟังก์ชันค้นหา ===
+// === ฟังก์ชันค้นหา ===
+window.filterTable = function(searchValue) {
+    if (!searchValue || searchValue.trim() === '') {
+        // ถ้าเป็นว่าง แสดงทั้งหมด
+        displayTableRows(allRecords);
+        document.getElementById('searchStats').style.display = 'none';
+        return;
+    }
+    
+    const searchLower = searchValue.toLowerCase();
+    const filtered = allRecords.filter(record => {
+        // ✨ ค้นหาเฉพาะชื่อและประเด็นท้าทาย (ตัดกลุ่มสาระฯ และตำแหน่งออก)
+        const searchText = `${record.fullName} ${record.challenge}`.toLowerCase();
+        return searchText.includes(searchLower);
+    });
+    
+    // แสดงผลค้นหา
+    if (filtered.length === 0) {
+        const publicTableBody = document.getElementById('publicSubmissionsTableBody');
+        publicTableBody.innerHTML = `
+            <tr>
+                <td colspan="7" style="text-align:center; padding: 30px; color: #999;">
+                    ไม่พบผลการค้นหา
+                </td>
+            </tr>`;
+        document.getElementById('searchStats').style.display = 'block';
+        document.getElementById('resultCount').textContent = '0';
+        document.getElementById('noResultsMessage').style.display = 'block';
+    } else {
+        displayTableRows(filtered);
+        document.getElementById('noResultsMessage').style.display = 'none';
+    }
+};
+
+// === ล้างค่าค้นหา ===
+window.clearSearch = function() {
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        searchInput.value = '';
+    }
+    
+    // แสดงทั้งหมด
+    displayTableRows(allRecords);
+    
+    // ซ่อนสถิติการค้นหา
+    document.getElementById('searchStats').style.display = 'none';
+    document.getElementById('noResultsMessage').style.display = 'none';
+};
+
+// === อัปเดตสถิติการค้นหา ===
+function updateSearchStats(count) {
+    const stats = document.getElementById('searchStats');
+    const resultCount = document.getElementById('resultCount');
+    
+    if (count > 0) {
+        stats.style.display = 'block';
+        resultCount.textContent = count;
+    } else {
+        stats.style.display = 'none';
+    }
+}
+
+        // === Update Dashboard - Optimized ===
+        function updateDashboard(records) {
+            if (!records) records = [];
+            
+            const totalSubmissions = records.length;
+            
+            const statusCounts = records.reduce((acc, curr) => {
+                const status = curr.status ? curr.status.trim() : '';
+                if (status.includes('✅')) acc.approved++;
+                else if (status.includes('❗')) acc.revision++;
+                else if (status.includes('⭐')) acc.pending++;
+                return acc;
+            }, { approved: 0, revision: 0, pending: 0 });
+            
+            // Animate dashboard numbers
+            animateNumber('totalCount', totalSubmissions);
+            animateNumber('pendingCount', statusCounts.pending);
+            animateNumber('approvedCount', statusCounts.approved);
+            animateNumber('revisionCount', statusCounts.revision);
+            
+            // Update chart
+            updateChart(records);
+        }
+
+        // === Update Chart (Separated for better performance) ===
+        function updateChart(records) {
+            const groupCounts = subjectGroups.reduce((acc, group) => {
+                acc[group] = 0;
+                return acc;
+            }, {});
+            
+            records.forEach(record => {
+                if (groupCounts.hasOwnProperty(record.learningGroup)) {
+                    groupCounts[record.learningGroup]++;
+                }
+            });
+            
+            const chartCanvas = document.getElementById('subjectChart');
+            if (!chartCanvas || chartCanvas.offsetParent === null) {
+                return;
+            }
+            
+            // Destroy existing chart
+            if (chartInstance) {
+                chartInstance.destroy();
+                chartInstance = null;
+            }
+            
+            const ctx = chartCanvas.getContext('2d');
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(groupCounts),
+                    datasets: [{
+                        label: 'จำนวนการส่ง',
+                        data: Object.values(groupCounts),
+                        backgroundColor: 'rgba(81, 90, 218, 0.7)',
+                        borderColor: 'rgba(81, 90, 218, 1)',
+                        borderWidth: 2,
+                        borderRadius: 5,
+                        borderSkipped: false,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: {
+                        duration: 1000,
+                        easing: 'easeInOutQuart'
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'สถิติการส่ง PA1 แยกตามกลุ่มสาระการเรียนรู้',
+                            font: {
+                                size: 14,
+                                family: "'Prompt', sans-serif",
+                                weight: 'bold'
+                            },
+                            color: '#333'
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleFont: {
+                                family: "'Prompt', sans-serif"
+                            },
+                            bodyFont: {
+                                family: "'Prompt', sans-serif"
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1,
+                                font: {
+                                    family: "'Prompt', sans-serif"
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                autoSkip: false,
+                                maxRotation: 45,
+                                minRotation: 45,
+                                font: {
+                                    family: "'Prompt', sans-serif",
+                                    size: 10
+                                }
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // === Handle Update with Optimistic Updates ===
+        window.handleUpdate = function(rowNum) {
+            const statusSelect = document.querySelector(`.status-select[data-row='${rowNum}']`);
+            const commentInput = document.querySelector(`.comment-input[data-row='${rowNum}']`);
+            const saveButton = document.querySelector(`button[onclick="handleUpdate(${rowNum})"]`);
+            
+            if (!statusSelect || !commentInput || !saveButton) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ข้อผิดพลาด',
+                    text: 'ไม่พบข้อมูลที่ต้องการอัปเดต',
+                    confirmButtonColor: '#7c3aed'
+                });
+                return;
+            }
+            
+            const newStatus = statusSelect.value;
+            const newComment = commentInput.value.trim();
+            const originalStatus = statusSelect.dataset.originalValue || statusSelect.value;
+            const originalComment = commentInput.dataset.originalValue || commentInput.value;
+            
+            // Disable button during update
+            saveButton.disabled = true;
+            saveButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            
+            const params = new URLSearchParams({
+                action: 'updateStatus',
+                rowNum: rowNum,
+                status: newStatus,
+                comment: newComment
+            });
+            
+            // Store original values for rollback
+            statusSelect.dataset.originalValue = originalStatus;
+            commentInput.dataset.originalValue = originalComment;
+            
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                body: params
+            })
+            .then(response => response.text())
+            .then(text => {
+                try {
+                    const result = JSON.parse(text);
+                    
+                    if (result.status === 'success') {
+                        // Show success feedback
+                        saveButton.innerHTML = '<i class="fas fa-check" style="color: green;"></i>';
+                        setTimeout(() => {
+                            saveButton.innerHTML = '<i class="fas fa-save"></i>';
+                        }, 2000);
+                        
+                        // Update cached data
+                        const recordIndex = cachedData.findIndex(record => 
+                            (record.rowNum || cachedData.indexOf(record) + 2) == rowNum
+                        );
+                        if (recordIndex !== -1) {
+                            cachedData[recordIndex].status = newStatus;
+                            cachedData[recordIndex].comment = newComment;
+                        }
+                        
+                        // Update other views safely
+                        try {
+                            populatePublicSubmissionsTable(cachedData);
+                            updateDashboard(cachedData);
+                            updateHomeStats(cachedData);
+                        } catch (updateError) {
+                            console.error('Error updating views after status change:', updateError);
+                        }
+                        
+                    } else {
+                        throw new Error(result.message || 'เกิดข้อผิดพลาดในการอัปเดต');
+                    }
+                } catch (e) {
+                    throw new Error('Invalid response format');
+                }
+            })
+            .catch(error => {
+                console.error('Update error:', error);
+                
+                // Rollback changes
+                statusSelect.value = originalStatus;
+                commentInput.value = originalComment;
+                
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาด',
+                    text: 'ไม่สามารถอัปเดตข้อมูลได้ กรุณาลองใหม่',
+                    confirmButtonColor: '#7c3aed'
+                });
+                
+                saveButton.innerHTML = '<i class="fas fa-exclamation-triangle" style="color: red;"></i>';
+                setTimeout(() => {
+                    saveButton.innerHTML = '<i class="fas fa-save"></i>';
+                }, 2000);
+            })
+            .finally(() => {
+                saveButton.disabled = false;
+            });
+        };
+
+        // === Settings Management ===
+
+async function handleSettingsLogin() {
+    const { value: password } = await Swal.fire({
+        title: 'รหัสผ่านตั้งค่าระบบ',
+        input: 'password',
+        inputPlaceholder: 'ใส่รหัสผ่าน...',
+        showCancelButton: true,
+        confirmButtonText: 'เข้าสู่ระบบ',
+        cancelButtonText: 'ยกเลิก',
+        confirmButtonColor: '#515ada',
+        cancelButtonColor: '#999',
+        inputValidator: (value) => {
+            if (!value) {
+                return 'กรุณาใส่รหัสผ่าน'
+            }
+        }
+    });
+    
+    if (password) {
+        if (password === 'silverfish') {
+            document.getElementById('settingsLogin').style.display = 'none';
+            document.getElementById('settingsView').style.display = 'block';
+            loadCurrentSettings();
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'รหัสผ่านไม่ถูกต้อง!',
+                confirmButtonColor: '#7c3aed'
+            });
+        }
+    }
+}
+
+async function loadCurrentSettings() {
+    showLoading('กำลังโหลดการตั้งค่า...');
+    
+    try {
+        const response = await fetch(`${SCRIPT_URL}?action=getConfig&t=${Date.now()}`);
+        const data = await response.json();
+        
+        if (data.status === 'success') {
+            const config = data.config;
+            
+            // ✅ เอาเฉพาะวันที่ (ก่อน T)
+            if (config.Deadline) {
+                const deadlineDate = config.Deadline.split('T')[0];
+                
+                console.log('Loaded deadline:', config.Deadline);
+                console.log('Setting date to:', deadlineDate);
+                
+                document.getElementById('deadlineDate').value = deadlineDate;
+            }
+            
+            if (config.Timezone) {
+                document.getElementById('timezoneInput').value = config.Timezone;
+            }
+            
+            if (config.Allow_Late_Submission !== undefined) {
+                document.getElementById('allowLateInput').value = config.Allow_Late_Submission;
+            }
+            
+            if (config.Late_Days_Allowed) {
+                document.getElementById('lateDaysInput').value = config.Late_Days_Allowed;
+            }
+            
+            updateSettingsDisplay(config);
+        }
+        
+        hideLoading();
+    } catch (error) {
+        hideLoading();
+        console.error('Error loading settings:', error);
+        
+        Swal.fire({
+            icon: 'error',
+            title: 'เกิดข้อผิดพลาด',
+            text: error.message || 'ไม่สามารถโหลดการตั้งค่า',
+            confirmButtonColor: '#7c3aed'
+        });
+    }
+}
+
+function updateSettingsDisplay(config) {
+    try {
+        // ✅ แสดง "วันที่ 23:59 น." เสมอ
+        const deadline = config.Deadline 
+            ? `${config.Deadline.split('T')[0]} 23:59 น.` 
+            : 'ไม่ได้ตั้งค่า';
+        
+        const timezone = config.Timezone || 'Asia/Bangkok';
+        const allowLate = config.Allow_Late_Submission === 'true' ? 'อนุญาต' : 'ไม่อนุญาต';
+        const lateDays = config.Late_Days_Allowed || '0';
+        
+        const deadlineInfo = document.getElementById('currentDeadlineInfo');
+        const timezoneInfo = document.getElementById('currentTimezoneInfo');
+        const lateInfo = document.getElementById('currentLateInfo');
+        
+        if (deadlineInfo) {
+            deadlineInfo.innerHTML = `<strong>วันเวลาส่ง:</strong> ${deadline}`;
+        }
+        
+        if (timezoneInfo) {
+            timezoneInfo.innerHTML = `<strong>เขตเวลา:</strong> ${timezone}`;
+        }
+        
+        if (lateInfo) {
+            lateInfo.innerHTML = `<strong>อนุญาตส่งล่าช้า:</strong> ${allowLate} (${lateDays} วัน)`;
+        }
+    } catch (error) {
+        console.error('Error in updateSettingsDisplay:', error);
+    }
+}
+
+// ✅ Debug Function - เรียกใช้ใน Console เพื่อตรวจสอบ
+function debugSettings() {
+    console.log('═══════════════════════════════════════════');
+    console.log('🔍 DEBUG SETTINGS');
+    console.log('═══════════════════════════════════════════');
+    
+    const dateEl = document.getElementById('deadlineDate');
+    const timeEl = document.getElementById('deadlineTime');
+    const tzEl = document.getElementById('timezoneInput');
+    const lateEl = document.getElementById('allowLateInput');
+    const lateDaysEl = document.getElementById('lateDaysInput');
+    
+    console.log('HTML Elements:');
+    console.log('  deadlineDate:', {
+        element: dateEl,
+        value: dateEl?.value,
+        type: dateEl?.type,
+        placeholder: dateEl?.placeholder
+    });
+    console.log('  deadlineTime:', {
+        element: timeEl,
+        value: timeEl?.value,
+        type: timeEl?.type
+    });
+    console.log('  timezoneInput:', {
+        value: tzEl?.value
+    });
+    console.log('  allowLateInput:', {
+        value: lateEl?.value
+    });
+    console.log('  lateDaysInput:', {
+        value: lateDaysEl?.value
+    });
+    
+    console.log('═══════════════════════════════════════════');
+}
+
+async function saveSettings() {
+    const date = document.getElementById('deadlineDate').value;
+    
+    // ✅ ตั้ง time = 23:59 เสมอ (ไม่ให้ user เลือก)
+    const time = '23:59';
+    
+    console.log('Saving Settings:');
+    console.log('  date:', date);
+    console.log('  time (fixed):', time);
+    
+    if (!date) {
+        Swal.fire({
+            icon: 'error',
+            title: 'ข้อมูลไม่ครบถ้วน',
+            text: 'กรุณากรอกวันส่งงาน',
+            confirmButtonColor: '#7c3aed'
+        });
+        return;
+    }
+    
+    // ✅ ตรวจสอบ format วันที่
+    const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+    if (!datePattern.test(date)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'รูปแบบวันที่ไม่ถูกต้อง',
+            text: 'กรุณากรอกวันที่ในรูป YYYY-MM-DD เช่น 2568-12-30',
+            confirmButtonColor: '#7c3aed'
+        });
+        return;
+    }
+    
+    // ✅ ตรวจสอบปี
+    const year = parseInt(date.substring(0, 4));
+    if (year < 2500 || year > 2700) {
+        Swal.fire({
+            icon: 'error',
+            title: 'ปีไม่ถูกต้อง',
+            text: 'กรุณากรอกปี พ.ศ. ระหว่าง 2500-2700',
+            confirmButtonColor: '#7c3aed'
+        });
+        return;
+    }
+    
+    // ✅ สร้าง deadline ด้วย time 23:59
+    const deadline = `${date}T${time}:00`;
+    const timezone = document.getElementById('timezoneInput').value;
+    const allowLate = document.getElementById('allowLateInput').value;
+    const lateDays = document.getElementById('lateDaysInput').value;
+    
+    console.log('Final deadline to send:', deadline);
+    
+    showLoading('กำลังบันทึก...');
+    
+    try {
+        const params = new URLSearchParams({
+            action: 'updateSettings',
+            Deadline: deadline,
+            Timezone: timezone,
+            Allow_Late_Submission: allowLate,
+            Late_Days_Allowed: lateDays
+        });
+        
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 30000);
+        
+        const response = await fetch(SCRIPT_URL, {
+            method: 'POST',
+            body: params,
+            signal: controller.signal
+        });
+        
+        clearTimeout(timeoutId);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        
+        const text = await response.text();
+        const result = JSON.parse(text);
+        
+        if (result.status !== 'success') {
+            throw new Error(result.message || 'ไม่สามารถบันทึกข้อมูล');
+        }
+        
+        hideLoading();
+        
+        if (typeof dataCache !== 'undefined' && dataCache.clear && typeof dataCache.clear === 'function') {
+            dataCache.clear();
+        }
+        
+        Swal.fire({
+            icon: 'success',
+            title: 'บันทึกสำเร็จ',
+            text: `วันเวลาส่ง: ${date} 23:59 น.`,
+            confirmButtonColor: '#515ada',
+            timer: 3000,
+            timerProgressBar: true
+        }).then(() => {
+            if (typeof fetchAndDisplayData === 'function') {
+                fetchAndDisplayData();
+            }
+            if (typeof loadCurrentSettings === 'function') {
+                loadCurrentSettings();
+            }
+        });
+        
+    } catch (error) {
+        hideLoading();
+        console.error('Error saving settings:', error);
+        
+        Swal.fire({
+            icon: 'error',
+            title: 'เกิดข้อผิดพลาด',
+            text: error.message || 'ไม่สามารถบันทึกการตั้งค่า',
+            confirmButtonColor: '#7c3aed'
+        });
+    }
+}
+
+// Add event listener for settings login button
+document.addEventListener('DOMContentLoaded', function() {
+    const settingsLoginBtn = document.getElementById('settingsLoginBtn');
+    if (settingsLoginBtn) {
+        settingsLoginBtn.addEventListener('click', handleSettingsLogin);
+    }
+});
+
+        // === Event Listeners ===
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Initializing PA1 System...');
+            
+            // Initialize components
+            initFileUpload();
+            updateNetworkStatus();
+            
+            // Attach event listeners
+            document.getElementById('pa1Form').addEventListener('submit', handleFormSubmit);
+            document.getElementById('loginBtn').addEventListener('click', handleAdminLogin);
+            
+            // Initial data load
+            setTimeout(() => {
+                fetchAndDisplayData();
+                
+                // Set up periodic refresh (every 2 minutes)
+                setInterval(() => {
+                    if (navigator.onLine) {
+                        dataLastUpdated = 0; // Force refresh
+                        fetchAndDisplayData();
+                    }
+                }, 120000);
+            }, 1000);
+            
+            // Handle page visibility changes
+            document.addEventListener('visibilitychange', () => {
+                if (!document.hidden && navigator.onLine) {
+                    // Page became visible, refresh data if it's been a while
+                    const now = Date.now();
+                    if ((now - dataLastUpdated) > CACHE_DURATION) {
+                        dataLastUpdated = 0;
+                        fetchAndDisplayData();
+                    }
+                }
+            });
+            
+            console.log('PA1 System initialized successfully');
+        });
+
+        // === Error Handling ===
+        window.addEventListener('error', (event) => {
+            console.error('Global error:', event.error);
+            // Could send error reports here
+        });
+
+        window.addEventListener('unhandledrejection', (event) => {
+            console.error('Unhandled promise rejection:', event.reason);
+            event.preventDefault();
+        });
+
+        // === Performance Monitoring ===
+        if ('performance' in window) {
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    const perfData = performance.getEntriesByType('navigation')[0];
+                    console.log('Page load time:', perfData.loadEventEnd - perfData.loadEventStart, 'ms');
+                }, 0);
+            });
+        }
+    </script>
+</body>
+</html>
