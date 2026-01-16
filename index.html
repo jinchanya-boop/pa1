@@ -1232,17 +1232,17 @@
         <!-- ✨ ตาราง -->
         <div class="status-table-wrapper">
             <table id="publicSubmissionsTable">
-    <thead>
-        <tr>
-            <th style="width: 5%;">ลำดับ</th>
-            <th style="width: 12%;">วันที่ส่ง</th>
-            <th style="width: 15%;">ชื่อ-นามสกุล</th>
-            <th style="width: 30%;">ประเด็นท้าทาย</th> <!-- เพิ่มจาก 14% เป็น 30% -->
-            <th style="width: 10%;">สถานะ</th>
-            <th style="width: 10%;">ทันเวลา</th>
-            <th style="width: 18%;">ความคิดเห็นจากผู้บริหาร</th> <!-- ลดจาก 30% เป็น 18% -->
-        </tr>
-    </thead>
+                <thead>
+                    <tr>
+                        <th style="width: 5%;">ลำดับ</th>
+                        <th style="width: 12%;">วันที่ส่ง</th>
+                        <th style="width: 15%;">ชื่อ-นามสกุล</th>
+                        <th style="width: 30%;">ประเด็นท้าทาย</th>
+                        <th style="width: 10%;">สถานะ</th>
+                        <th style="width: 10%;">ทันเวลา</th>  <!-- ✅ เพิ่มบรรทัดนี้ -->
+                        <th style="width: 18%;">ความคิดเห็นจากผู้บริหาร</th>
+                    </tr>
+                </thead>
                 <tbody id="publicSubmissionsTableBody">
                     <tr>
                         <td colspan="8" style="text-align:center; padding: 30px; color: #999;">
@@ -2164,25 +2164,25 @@ function displayTableRows(records) {
         
         // ✨ แก้ไขส่วน innerHTML - ตัดคอลัมน์กลุ่มสาระฯ และตำแหน่งออก
         row.innerHTML = `
-    <td style="text-align: center;"><strong>${index + 1}</strong></td>
-    <td>${formattedDate}</td>
-    <td><strong>${record.fullName || ''}</strong></td>
-    <td style="color: #666; font-size: 0.9rem; line-height: 1.5; padding: 12px 12px 12px 12px; word-wrap: break-word; white-space: pre-line; text-indent: 0 !important; text-align: left;">
+    <td style="text-align: center;"><strong>${index + 1}</strong></td>                    <!-- 1. ลำดับ -->
+    <td>${formattedDate}</td>                                                              <!-- 2. วันที่ส่ง -->
+    <td><strong>${record.fullName || ''}</strong></td>                                    <!-- 3. ชื่อ-นามสกุล -->
+    <td style="color: #666; ...">
         ${challengeText}
-    </td>
-            <td>
-                <span class="status-badge ${statusClass}">
-                    ${statusText}
-                </span>
-            </td>
-            <td>
-                <span class="timeliness-badge ${timelinessClass}">
-                    ${timelinessText}
-                </span>
-            </td>
-            <td style="${commentStyle} font-size: 0.85rem;">
-                ${commentDisplay}
-            </td>`;
+    </td>                                                                                  <!-- 4. ประเด็นท้าทาย -->
+    <td>
+        <span class="status-badge ${statusClass}">
+            ${statusText}
+        </span>
+    </td>                                                                                  <!-- 5. สถานะ -->
+    <td>
+        <span class="timeliness-badge ${timelinessClass}">
+            ${timelinessText}
+        </span>
+    </td>                                                                                  <!-- 6. ทันเวลา ✅ -->
+    <td style="${commentStyle} font-size: 0.85rem;">
+        ${commentDisplay}
+    </td>`;                                                                                <!-- 7. ความคิดเห็น -->
         
         // ✨ อัปเดต data-search ให้ไม่มีกลุ่มสาระฯ และตำแหน่ง
         row.setAttribute('data-search', `${record.fullName} ${record.challenge}`.toLowerCase());
